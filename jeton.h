@@ -1,6 +1,4 @@
 #include<stdio.h>
-#include<conio.h>
-#include<math.h>
 
 typedef enum
 {
