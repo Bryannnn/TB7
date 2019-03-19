@@ -6,6 +6,4 @@ Arbre creer_arbre();
 
 //Fonction de création d'un noeud
 Arbre inserer()
-
-
-
+ 
