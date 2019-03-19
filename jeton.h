@@ -2,6 +2,7 @@
 #include<conio.h>
 #include<math.h>
 
+ZIZI
 typedef enum
 {
 	REEL, OPERATEUR, FONCTION, ERREUR, FIN, PAR_OUV, PAR_FERM, VARIABLE, BAR_OUV, BAR_FERM, ABSOLU
