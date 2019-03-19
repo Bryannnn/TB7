@@ -34,9 +34,9 @@ typedef struct {
 	typevaleur valeur;
 }typejeton;
 
-struct Node {
+struct Noeud {
     typejeton jeton;
-    struct Node *jeton_preced;
-    struct Node *jeton_suiv;
+    struct Noeud *jeton_preced;
+    struct Noeud *jeton_suiv;
 } Node;
-typedef struct Node *Arbre;
+typedef struct Noeud *Arbre;
