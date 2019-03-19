@@ -70,10 +70,10 @@ printf("Rentrer la fonction ");
 			int j = 0;
 			int temp[100];
 			temp[j]= (expression[i]-48);
-			while (expression[i+1] >= '0' && expression[i+1] <= '9') {
+
+			while (expression[i] >= '0' && expression[i] <= '9') {
 				j++;
 				temp[j] = (expression[i] - 48);
-				printf("nombre = %d\n", temp[j]);
 				i++;
 			}
 			
@@ -88,15 +88,11 @@ printf("Rentrer la fonction ");
 				s += temp[j] * p;
 				
 			}
+			printf("s=%d\n", s);
 			jeton[i].lexem = REEL;
 			jeton[i].valeur.reel = s;
 		}
 	}
-
-	/*for (i = 0; i <= length; i++) {
-		printf("%s", jeton[i]);
-		printf("%d", jeton[i].valeur);
-	}*/
 
 	_getch();
 
