@@ -36,7 +36,7 @@ typedef struct {
 
 struct Noeud {
     typejeton jeton;
-    struct Noeud *jeton_preced;
-    struct Noeud *jeton_suiv;
-} Node;
+    struct Noeud *fils_gauche;
+    struct Noeud *fils_droit;
+};
 typedef struct Noeud *Arbre;
