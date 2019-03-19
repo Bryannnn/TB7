@@ -14,7 +14,27 @@ Arbre creer_noeud( typejeton jeton, Arbre fils_gauche, Arbre fils_droit ) {
 	resultat = (Arbre)malloc( sizeof( struct Noeud ) );
 
 	resultat->jeton.lexem = jeton.lexem;
-	resultat->jeton.valeur = jeton.valeur;
+	switch(jeton.lexem){
+
+		case REEL:
+			resultat->jeton.valeur.reel = jeton.valeur.reel;
+			break;
+
+		case FONCTION:
+			resultat->jeton.valeur.fonction = jeton.valeur.fonction;
+			break;
+
+		case OPERATEUR:
+			resultat->jeton.valeur.operateur = jeton.valeur.operateur;
+			break;
+
+		case ERREUR:
+			resultat->jeton.valeur.erreur = jeton.valeur.erreur;
+			break;
+
+		default: printf("Ceci n'est pas un opérateur défini\n");
+	}
+	
 	resultat->fils_gauche = fils_gauche;
 	resultat->fils_droit = fils_droit;
 
@@ -44,22 +64,29 @@ Arbre operateur(typejeton Tab[],Arbre A,int i){
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//Gestion du cas : opérateur
-/*Arbre operateur(typejeton Tab[],int* i){
+//Gestion du cas : fonction
+/*Arbre fct(typejeton Tab[],Arbre A, int i){
 
-	int j = *i + 1;
-	Arbre A, tmp;
-
-	tmp = AS(Tab, j);
-	A = creer_noeud(Tab[*i],A,tmp);
+	A = creer_noeud(Tab[i], A, NULL);
 
 	return A;
 }*/
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Gestion du cas : fonction
+Arbre par_ouv(typejeton Tab[], int i){
+
+	Arbre A;
+	int j = i + 1;
+	A = AS(Tab,j);
+
+	return A;
+}
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Remplissage de l'arbre
 Arbre AS(typejeton Tab[], int i){
 
-	Arbre A;
+	Arbre A = NULL;
 	while(Tab[i].lexem != FIN){
 		switch(Tab[i].lexem){
 
@@ -67,17 +94,32 @@ Arbre AS(typejeton Tab[], int i){
 			case REEL: 
 			case VARIABLE:
 				A = reel(Tab,i);
+				i = i + 1;
 			break;
-			//Si le jeton actuel est un réel, on crée un arbre dans lequel on insère le jeton (fils_gauche et fils_droit égaux à NULL)
+			//Si le jeton actuel est un opérateur
 			case OPERATEUR:
 				A = operateur(Tab, A, i);
+				i = i + 2;
+			break;
+			//Si le jeton actuel est une fonction
+			/*case FONCTION:
+				A = fct(Tab, A, i);
+				i = i + 1;
+			break;*/
+			//Si le jeton actuel est une parenthèse ouverte
+			case PAR_OUV:
+				A = par_ouv(Tab, i);
+				i = i + 1;
+			break;
+			//Si le jeton actuel est une parenthèse fermée
+			case PAR_FERM:
+				i = i + 1;
 			break;
 
 			default:
 			printf("erreur");
 		}
 
-		i = i + 1;
 	}
 
 	return A;
@@ -86,6 +128,7 @@ Arbre AS(typejeton Tab[], int i){
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void afficher( Arbre a) {
 	if(a == NULL){
+		printf("||\n");
 		return;
 	}
 	else{
@@ -104,14 +147,42 @@ int i = 0;
 typejeton tab_test[100];
 
 Arbre A;
+	
+	tab_test[0].lexem = PAR_OUV;
 
-	tab_test[0].lexem = REEL;
-	tab_test[0].valeur.reel = 1;
-	tab_test[1].lexem = OPERATEUR;
-	tab_test[1].valeur.operateur = PLUS;
+	tab_test[1].lexem = PAR_OUV;
+
 	tab_test[2].lexem = REEL;
-	tab_test[2].valeur.reel = 2;
-	tab_test[3].lexem = FIN;
+	tab_test[2].valeur.reel = 1;
+
+	tab_test[3].lexem = OPERATEUR;
+	tab_test[3].valeur.operateur = FOIS;
+
+	tab_test[4].lexem = REEL;
+	tab_test[4].valeur.reel = 2;
+
+	tab_test[5].lexem = PAR_FERM;
+
+	tab_test[6].lexem = OPERATEUR;
+	tab_test[6].valeur.operateur = FOIS;
+
+	tab_test[7].lexem = REEL;
+	tab_test[7].valeur.reel = 3;
+
+	/*tab_test[3].lexem = PAR_OUV;
+
+	tab_test[4].lexem = REEL;
+	tab_test[4].valeur.reel = 3;
+
+	tab_test[5].lexem = OPERATEUR;
+	tab_test[5].valeur.operateur = FOIS;
+
+	tab_test[6].lexem = REEL;
+	tab_test[6].valeur.reel = 4;*/
+
+	tab_test[8].lexem = PAR_FERM;
+
+	tab_test[9].lexem = FIN;
 
 	//printf("%d\n",tab_test[0].lexem);
 	//printf("%f\n",tab_test[0].valeur.reel);
