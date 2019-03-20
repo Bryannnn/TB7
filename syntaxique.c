@@ -22,7 +22,7 @@ Arbre creer_noeud( typejeton jeton, Arbre fils_gauche, Arbre fils_droit ) {
 
 		case VARIABLE:
 		break;
-		
+
 		case FONCTION:
 			resultat->jeton.valeur.fonction = jeton.valeur.fonction;
 			break;
@@ -65,12 +65,11 @@ Arbre operation(typejeton Tab[],Arbre A,int i){
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Gestion du cas : fonction
-/*Arbre fct(typejeton Tab[],Arbre A, int i){
+Arbre fct(typejeton Tab[],Arbre A, int i){
 
-	A = creer_noeud(Tab[i], A, NULL);
+	//return creer_noeud(Tab[i],  , NULL);
 
-	return A;
-}*/
+}
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Gestion du cas : fonction
@@ -98,7 +97,7 @@ Arbre AS(typejeton Tab[], int i){
 
 			//Si le jeton actuel est un opérateur
 			case OPERATEUR:
-				if(Tab[i+1].lexem == PAR_OUV){
+				if(Tab[i+1].lexem == PAR_OUV || Tab[i+1].lexem == FONCTION){
 					return A = creer_noeud(Tab[i],A,AS(Tab, i+1));				
 				}
 				else{
@@ -108,10 +107,14 @@ Arbre AS(typejeton Tab[], int i){
 			break;
 
 			//Si le jeton actuel est une fonction
-			/*case FONCTION:
-				A = fct(Tab, A, i);
-				i = i + 1;
-			break;*/
+			case FONCTION:
+				if(Tab[i+1].lexem == PAR_OUV){
+					return A = creer_noeud(Tab[i],AS(Tab,i+1),NULL);
+				}
+				else{
+					printf("parenthèse manquante\n");
+				}
+			break;
 			
 			//Si le jeton actuel est une parenthèse ouverte
 			case PAR_OUV:
@@ -158,7 +161,7 @@ void afficher( Arbre a) {
 			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.erreur);
 			break;
 
-		default: printf("Ceci n'est pas un opérateur défini\n");
+		default: printf("Affichage impossible\n");
 	}
 	}
 
@@ -175,25 +178,25 @@ typejeton tab_test[100];
 
 Arbre A;
 	
-	tab_test[0].lexem = PAR_OUV;
+	tab_test[0].lexem = REEL;
+	tab_test[0].valeur.reel = 1;
 
-	tab_test[1].lexem = VARIABLE;
-
-	tab_test[2].lexem = OPERATEUR;
-	tab_test[2].valeur.operateur = PLUS;
+	tab_test[1].lexem = OPERATEUR;
+	tab_test[1].valeur.operateur = PLUS;
+	
+	tab_test[2].lexem = FONCTION;
+	tab_test[2].valeur.fonction = SIN;
 
 	tab_test[3].lexem = PAR_OUV;
 
-	tab_test[4].lexem = REEL;
-	tab_test[4].valeur.reel = 3;
+	tab_test[4].lexem = VARIABLE;
 
 	tab_test[5].lexem = OPERATEUR;
-	tab_test[5].valeur.operateur = FOIS;
+	tab_test[5].valeur.operateur = PLUS;
 
 	tab_test[6].lexem = REEL;
-	tab_test[6].valeur.reel = 4;
+	tab_test[6].valeur.reel = 2;
 
-	tab_test[7].lexem = PAR_FERM;
 	tab_test[7].lexem = PAR_FERM;
 
 	tab_test[8].lexem = FIN;
