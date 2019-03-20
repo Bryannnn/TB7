@@ -45,93 +45,75 @@ Arbre creer_noeud( typejeton jeton, Arbre fils_gauche, Arbre fils_droit ) {
 }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Gestion du cas : réel
-Arbre reel(typejeton Tab[],int i){
-
-	return creer_noeud(Tab[i],NULL,NULL);
+Arbre reel(typejeton Tab[], int* i){
+	Arbre A;
+	A = creer_noeud(Tab[*i],NULL,NULL);
+	*i = *i + 1;
+	return A;
 }
-
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//Gestion du cas : opérateur
-Arbre operation(typejeton Tab[],Arbre A,int i){
+//Gestion du cas : fonction
+Arbre fct(typejeton Tab[], int* i){
+	typejeton racine;
+	racine.lexem = Tab[*i].lexem;
+	racine.valeur = Tab[*i].valeur;
 
-	int j = i + 1;
-	//Arbre tmp;
-
-	//tmp = AS(Tab, j);
-	A = creer_noeud(Tab[i], A, creer_noeud(Tab[j],NULL,NULL));
-
+	*i = *i + 1;
+	Arbre A = creer_noeud(racine, NULL, AS(Tab, i));
 	return A;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Gestion du cas : fonction
-Arbre fct(typejeton Tab[],Arbre A, int i){
+Arbre par_ouv(typejeton Tab[], int* i){
 
-	//return creer_noeud(Tab[i],  , NULL);
+	Arbre A, fg, fd = NULL;
+	typejeton racine;
 
-}
+	*i = *i + 1;
+	fg = AS(Tab, i);
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-//Gestion du cas : fonction
-Arbre par_ouv(typejeton Tab[],Arbre A, int i){
-
-	int j = i + 1;
-	A = creer_noeud(Tab[i-1],A,AS(Tab,j));
-
+	if(Tab[*i].lexem == OPERATEUR){
+		racine.lexem = Tab[*i].lexem;
+		racine.valeur = Tab[*i].valeur;
+		*i = *i + 1;
+	}
+	fd = AS(Tab, i);
+	A = creer_noeud(racine,fg,fd);
+	*i = *i + 1;
+	if(Tab[*i].lexem == PAR_FERM){
+		*i = *i + 1;
+	}
 	return A;
 }
+
+
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Remplissage de l'arbre
-Arbre AS(typejeton Tab[], int i){
+Arbre AS(typejeton Tab[], int* i){
 
 	Arbre A = NULL;
-	while(Tab[i].lexem != FIN){
-		switch(Tab[i].lexem){
 
-			//Si le jeton actuel est une parenthèse, on passe au jeton suivant
-			case REEL: 
-			case VARIABLE:
-				A = reel(Tab,i);
-				i = i + 1;
-			break;
-
-
-			//Si le jeton actuel est un opérateur
-			case OPERATEUR:
-				if(Tab[i+1].lexem == PAR_OUV || Tab[i+1].lexem == FONCTION){
-					return A = creer_noeud(Tab[i],A,AS(Tab, i+1));				
-				}
-				else{
-					A = operation(Tab, A, i);
-					i = i + 2;
-				}				
-			break;
-
-			//Si le jeton actuel est une fonction
-			case FONCTION:
-				if(Tab[i+1].lexem == PAR_OUV){
-					return A = creer_noeud(Tab[i],AS(Tab,i+1),NULL);
-				}
-				else{
-					printf("parenthèse manquante\n");
-				}
-			break;
-			
-			//Si le jeton actuel est une parenthèse ouverte
-			case PAR_OUV:
-			case PAR_FERM:
-				return A = creer_noeud(Tab[i+1],A,AS(Tab,i+2));
-			break;
-
-			default:
-			printf("erreur");
+			switch(Tab[*i].lexem){
+				//------------------------------------------------------------------		
+				case PAR_OUV:
+					A = par_ouv(Tab, i);
+					break;
+				//------------------------------------------------------------------
+				case REEL:
+				case VARIABLE:
+					A = reel(Tab, i);
+				break;
+				//------------------------------------------------------------------
+				case FONCTION:
+					A = fct(Tab, i);
+				break;
+				//------------------------------------------------------------------
+				default:
+				printf("erreur\n");
 		}
-
-	}
-
 	return A;
 }
-
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void afficher( Arbre a) {
 	if(a == NULL){
@@ -174,34 +156,31 @@ void afficher( Arbre a) {
 int main(){
 
 int i = 0;
+int* p = &i;
+
 typejeton tab_test[100];
 
 Arbre A;
-	
-	tab_test[0].lexem = REEL;
-	tab_test[0].valeur.reel = 1;
 
-	tab_test[1].lexem = OPERATEUR;
-	tab_test[1].valeur.operateur = PLUS;
-	
-	tab_test[2].lexem = FONCTION;
-	tab_test[2].valeur.fonction = SIN;
+	tab_test[0].lexem = PAR_OUV;
 
-	tab_test[3].lexem = PAR_OUV;
+	tab_test[1].lexem = FONCTION;
+	tab_test[1].valeur.fonction = SIN;
 
-	tab_test[4].lexem = VARIABLE;
+
+	tab_test[2].lexem = VARIABLE;
+
+	tab_test[3].lexem = OPERATEUR;
+	tab_test[3].valeur.operateur = PLUS;
+
+	tab_test[4].lexem = REEL;
+	tab_test[4].valeur.reel = 2;
 
 	tab_test[5].lexem = PAR_FERM;
 
-	tab_test[6].lexem = OPERATEUR;
-	tab_test[6].valeur.operateur = PLUS;
+	tab_test[6].lexem = FIN;
 
-	tab_test[7].lexem = REEL;
-	tab_test[7].valeur.reel = 2;
-
-	tab_test[8].lexem = FIN;
-
-A = AS(tab_test, i);
+A = AS(tab_test, p);
 afficher(A);
 
 return 0;
