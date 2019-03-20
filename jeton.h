@@ -7,12 +7,12 @@ typedef enum
 
 typedef enum
 	{
-	PLUS, MOINS, FOIS, DIV, PUIS
+	PLUS, MOINS, FOIS, DIV, PUIS, LN, MOD
 }typeoperateur;
 
 typedef enum
 	{
-	ABS, SIN, SQRT, LOG, COS, TAN, EXP, ENTIER, VAL_NEG, SINC
+	ABS, SIN, SQRT, LOG, COS, TAN, EXP, ENTIER, VAL_NEG, SINC, COSH, SINH, TANH, ACOS, ASIN, ATAN,
 }typefonction;
 
 typedef enum
