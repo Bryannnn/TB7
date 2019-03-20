@@ -95,6 +95,7 @@ Arbre AS(typejeton Tab[], int i){
 				i = i + 1;
 			break;
 
+
 			//Si le jeton actuel est un opérateur
 			case OPERATEUR:
 				if(Tab[i+1].lexem == PAR_OUV || Tab[i+1].lexem == FONCTION){
@@ -119,8 +120,7 @@ Arbre AS(typejeton Tab[], int i){
 			//Si le jeton actuel est une parenthèse ouverte
 			case PAR_OUV:
 			case PAR_FERM:
-				//A = par_ouv(Tab, A, i);
-				i = i + 1;
+				return A = creer_noeud(Tab[i+1],A,AS(Tab,i+2));
 			break;
 
 			default:
@@ -191,13 +191,13 @@ Arbre A;
 
 	tab_test[4].lexem = VARIABLE;
 
-	tab_test[5].lexem = OPERATEUR;
-	tab_test[5].valeur.operateur = PLUS;
+	tab_test[5].lexem = PAR_FERM;
 
-	tab_test[6].lexem = REEL;
-	tab_test[6].valeur.reel = 2;
+	tab_test[6].lexem = OPERATEUR;
+	tab_test[6].valeur.operateur = PLUS;
 
-	tab_test[7].lexem = PAR_FERM;
+	tab_test[7].lexem = REEL;
+	tab_test[7].valeur.reel = 2;
 
 	tab_test[8].lexem = FIN;
 
