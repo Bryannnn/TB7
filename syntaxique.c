@@ -32,7 +32,7 @@ Arbre creer_noeud( typejeton jeton, Arbre fils_gauche, Arbre fils_droit ) {
 			resultat->jeton.valeur.erreur = jeton.valeur.erreur;
 			break;
 
-		default: printf("Ceci n'est pas un opérateur défini\n");
+		default: printf("Ceci n'est pas un operateur defini\n");
 	}
 	
 	resultat->fils_gauche = fils_gauche;
@@ -52,7 +52,7 @@ Arbre reel(typejeton Tab[],int i){
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Gestion du cas : opérateur
-Arbre operateur(typejeton Tab[],Arbre A,int i){
+Arbre operation(typejeton Tab[],Arbre A,int i){
 
 	int j = i + 1;
 	Arbre tmp;
@@ -74,11 +74,10 @@ Arbre operateur(typejeton Tab[],Arbre A,int i){
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Gestion du cas : fonction
-Arbre par_ouv(typejeton Tab[], int i){
+Arbre par_ouv(typejeton Tab[],Arbre A, int i){
 
-	Arbre A;
 	int j = i + 1;
-	A = AS(Tab,j);
+	A = creer_noeud(Tab[i-1],A,AS(Tab,j));
 
 	return A;
 }
@@ -98,8 +97,14 @@ Arbre AS(typejeton Tab[], int i){
 			break;
 			//Si le jeton actuel est un opérateur
 			case OPERATEUR:
-				A = operateur(Tab, A, i);
-				i = i + 2;
+				A = operation(Tab, A, i);
+				if(Tab[i+1].lexem != PAR_OUV){
+					i = i + 2;
+				}
+				else{
+					i = i + 1;
+				}
+				
 			break;
 			//Si le jeton actuel est une fonction
 			/*case FONCTION:
@@ -108,7 +113,7 @@ Arbre AS(typejeton Tab[], int i){
 			break;*/
 			//Si le jeton actuel est une parenthèse ouverte
 			case PAR_OUV:
-				A = par_ouv(Tab, i);
+				A = par_ouv(Tab, A, i);
 				i = i + 1;
 			break;
 			//Si le jeton actuel est une parenthèse fermée
@@ -132,7 +137,26 @@ void afficher( Arbre a) {
 		return;
 	}
 	else{
-		printf("%d|%f|\n",a->jeton.lexem,a->jeton.valeur.reel);
+		switch(a->jeton.lexem){
+
+		case REEL:
+			printf("%d|%f\n",a->jeton.lexem, a->jeton.valeur.reel);
+			break;
+
+		case FONCTION:
+			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.fonction);
+			break;
+
+		case OPERATEUR:
+			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.operateur);
+			break;
+
+		case ERREUR:
+			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.erreur);
+			break;
+
+		default: printf("Ceci n'est pas un opérateur défini\n");
+	}
 	}
 
 	afficher(a->fils_gauche);
@@ -150,26 +174,13 @@ Arbre A;
 	
 	tab_test[0].lexem = PAR_OUV;
 
-	tab_test[1].lexem = PAR_OUV;
+	tab_test[1].lexem = REEL;
+	tab_test[1].valeur.reel = 1;
 
-	tab_test[2].lexem = REEL;
-	tab_test[2].valeur.reel = 1;
+	tab_test[2].lexem = OPERATEUR;
+	tab_test[2].valeur.operateur = PLUS;
 
-	tab_test[3].lexem = OPERATEUR;
-	tab_test[3].valeur.operateur = FOIS;
-
-	tab_test[4].lexem = REEL;
-	tab_test[4].valeur.reel = 2;
-
-	tab_test[5].lexem = PAR_FERM;
-
-	tab_test[6].lexem = OPERATEUR;
-	tab_test[6].valeur.operateur = FOIS;
-
-	tab_test[7].lexem = REEL;
-	tab_test[7].valeur.reel = 3;
-
-	/*tab_test[3].lexem = PAR_OUV;
+	tab_test[3].lexem = PAR_OUV;
 
 	tab_test[4].lexem = REEL;
 	tab_test[4].valeur.reel = 3;
@@ -178,7 +189,9 @@ Arbre A;
 	tab_test[5].valeur.operateur = FOIS;
 
 	tab_test[6].lexem = REEL;
-	tab_test[6].valeur.reel = 4;*/
+	tab_test[6].valeur.reel = 4;
+
+	tab_test[7].lexem = PAR_FERM;
 
 	tab_test[8].lexem = PAR_FERM;
 
