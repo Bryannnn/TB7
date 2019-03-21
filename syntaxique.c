@@ -140,7 +140,7 @@ Arbre AS(typejeton Tab[], int* i){
 				default:
 					erreur(Tab, i , e);
 		}
-	if (*e == 0) {
+	if (*e == 0 && Tab[*i].lexem == FIN) {
 			return A;
 	} else {
 		printf("Erreur syntaxique a %d \n", (*i+1));
