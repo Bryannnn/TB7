@@ -27,6 +27,9 @@ Arbre creer_noeud( typejeton jeton, Arbre fils_gauche, Arbre fils_droit ) {
 			break;
 
 		case VARIABLE:
+		case PAR_OUV:
+		case PAR_FERM:
+		case FIN:
 		break;
 
 		case FONCTION:
@@ -41,7 +44,7 @@ Arbre creer_noeud( typejeton jeton, Arbre fils_gauche, Arbre fils_droit ) {
 			resultat->jeton.valeur.erreur = jeton.valeur.erreur;
 			break;
 
-		default: printf("Ceci n'est pas un operateur defini\n");
+		default: break;
 	}
 
 	resultat->fils_gauche = fils_gauche;
@@ -79,6 +82,13 @@ Arbre par_ouv(typejeton Tab[], int* i, int* e){
 	*i = *i + 1;
 
 	fg = AS(Tab, i);
+
+	if(Tab[*i].lexem == PAR_FERM) {
+		return fg;
+	} else if (Tab[*i].lexem == FIN) {
+		erreur(Tab, i, e);
+		return NULL;
+	}
 
 	if(Tab[*i].lexem == OPERATEUR){
 		racine.lexem = Tab[*i].lexem;
@@ -168,7 +178,7 @@ void afficher( Arbre a) {
 			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.erreur);
 			break;
 
-		default: printf("Affichage impossible\n");
+		default: break;
 	}
 	}
 
@@ -179,7 +189,7 @@ void afficher( Arbre a) {
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
-
+/*
 int i = 0;
 int* p = &i;
 
@@ -189,21 +199,22 @@ Arbre A;
 
 	tab_test[0].lexem = PAR_OUV;
 
-	tab_test[1].lexem = VARIABLE;
+	tab_test[1].lexem = REEL;
+	tab_test[1].valeur.reel = 2;
 
 	tab_test[2].lexem = OPERATEUR;
-	tab_test[2].valeur.operateur = PLUS;
+	tab_test[2].valeur.reel = PLUS;
 
 	tab_test[3].lexem = REEL;
 	tab_test[3].valeur.reel = 2;
 
-	//tab_test[4].lexem = PAR_FERM;
+	tab_test[4].lexem = PAR_FERM;
 
-	tab_test[4].lexem = FIN;
+	tab_test[5].lexem = FIN;
 
 	A = AS(tab_test, p);
 
 	afficher(A);
-
+*/
 	return 0;
 }
