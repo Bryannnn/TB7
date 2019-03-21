@@ -82,10 +82,11 @@ Arbre par_ouv(typejeton Tab[], int* i, int* e){
 	*i = *i + 1;
 
 	fg = AS(Tab, i);
-
+	//Dans le cas par exemple "(sinx)" on vérifie si on a une parenthèse fermante après le "x"
 	if(Tab[*i].lexem == PAR_FERM) {
 		return fg;
 	} else if (Tab[*i].lexem == FIN) {
+		//sinon on a une erreur
 		erreur(Tab, i, e);
 		return NULL;
 	}
@@ -140,6 +141,7 @@ Arbre AS(typejeton Tab[], int* i){
 				default:
 					erreur(Tab, i , e);
 		}
+	//Si on a aucune erreur et on est à la fin de l'expression
 	if (*e == 0 && Tab[*i].lexem == FIN) {
 			return A;
 	} else {
