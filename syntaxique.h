@@ -8,8 +8,16 @@ Arbre creer_arbre();
 Arbre creer_noeud();
 
 //Fonction de remplissage de l'arbre
-Arbre AS(typejeton Tab[], int i);
+Arbre AS(typejeton Tab[], int* i);
 
-Arbre reel(typejeton Tab[],int i);
+//Fonction de traitement d'un réel
+Arbre reel(typejeton Tab[], int* i);
 
-Arbre operateur(typejeton Tab[],Arbre A, int i);
+//Fonction de traitement d'un opérateur
+Arbre operation(typejeton Tab[], int* i);
+
+//Fonction de traitement d'une fonction
+Arbre fct(typejeton Tab[], int* i);
+
+//Fonction de traitement d'une parenthèse ouverte
+Arbre par_ouv(typejeton Tab[], int* i);
