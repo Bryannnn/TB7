@@ -20,4 +20,7 @@ Arbre operation(typejeton Tab[], int* i);
 Arbre fct(typejeton Tab[], int* i);
 
 //Fonction de traitement d'une parenthèse ouverte
-Arbre par_ouv(typejeton Tab[], int* i);
+Arbre par_ouv(typejeton Tab[], int* i, int* e);
+
+//Fonction qui est lancée lorsqu'on détecte une erreur
+void erreur(typejeton Tab[], int* i, int *e);
