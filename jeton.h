@@ -14,7 +14,7 @@ typedef enum
 
 typedef enum
 	{
-	ABS, SIN, SQRT, LOG, COS, TAN, EXP, ENTIER, VAL_NEG, SINC, COSH, SINH, TANH, ACOS, ASIN, ATAN, LN
+	ABS, SIN, SQRT, LOG, COS, TAN, EXP, ARCCOS, ARCSIN, ARCTAN, LN
 }typefonction;
 
 typedef enum
