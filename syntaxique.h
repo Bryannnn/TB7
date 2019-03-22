@@ -1,6 +1,7 @@
+#ifndef SYNTAXIQUE_H
+#define SYNTAXIQUE_H
+
 #include "jeton.h"
-
-
 //Fonction de création d'un arbre vide
 Arbre creer_arbre();
 
@@ -24,3 +25,7 @@ Arbre par_ouv(typejeton Tab[], int* i, int* e);
 
 //Fonction qui est lancée lorsqu'on détecte une erreur
 void erreur(typejeton Tab[], int* i, int *e);
+
+void afficher(Arbre a);
+
+#endif //SYNTAXIQUE_H
