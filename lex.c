@@ -1,124 +1,204 @@
-#include<stdio.h>
-#include<conio.h>
-#include<math.h>
-#include "jeton.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <math.h>
+#include <string.h>
 
-int main() {
+// "DETECTION_FONCTION" PERMET D'ASSOCIER A CHAQUE REEL, OPERATEUR, FONCTION, VARIABLE ET PARENTHESE UN JETON COMPORTANT UN LEXEM ET UNE VALEUR EVENTUELLE.
+// ELLE GERE AUSSI LES ERREURS DE FRAPPE ET LA FIN DE L'EXPRESSION.
 
-	char expression[100]; //Expression mathématique entrée par l'utilisateur
-	int length; //longueur de l'expression
-	int i; //compteur
-	int imax; //nombre total d'éléments dans l'expression
-	int s; //Résultat de l'addition pour le cas des REEL
-	typejeton jeton[200]; //Sortie de l'AL
+void detection_fonction(){
 
-printf("Rentrer la fonction ");
-	scanf("%s", &expression);
-	printf("%s\n", expression);
+char fonction[100];
+typejeton jeton[100];
+scanf("%s", &fonction);
+int i=0;
+int j=0;
+int erreur;
 
+while(fonction[i] != '\0'){
+erreur=1;
 
-	length = strlen(expression);
-	printf("longueur : %d\n", length);
+// POUR LES OPERATEURS
 
-	for (i = 0; i <= length; i++) { //Detection de chaque élément de l'expression
-		
-		//Detection des lexèmes OPERATEURS 
-		
-		if (expression[i] == '+') {
-			printf("+\n");
-			jeton[i].lexem = OPERATEUR;
-			jeton[i].valeur.operateur = PLUS;
-		}
-		 else if (expression[i] == '-') {
-			printf("-");
-			jeton[i].lexem = OPERATEUR;
-			jeton[i].valeur.operateur = MOINS;
-		}
-		else if (expression[i] == '*') {
-			printf("*");
-			jeton[i].lexem = OPERATEUR;
-			jeton[i].valeur.operateur = FOIS;
-		}
-		else if (expression[i] == '/') {
-			printf("/");
-			jeton[i].lexem = OPERATEUR;
-			jeton[i].valeur.operateur = DIV;
-		}
-		else if (expression[i] == '^') {
-			printf("^");
-			jeton[i].lexem = OPERATEUR;
-			jeton[i].valeur.operateur = PUIS;
-		}
+    if(fonction[i] == ('+')){
+        jeton[j].lexem=OPERATEUR;
+        jeton[j].valeur.operateur=PLUS;
+        erreur=0;
+    }
+    else if(fonction[i] == ('-')){
+        jeton[j].lexem=OPERATEUR;
+        jeton[j].valeur.operateur=MOINS;
+        erreur=0;
+    }
+    else if(fonction[i] == ('*')){
+        jeton[j].lexem=OPERATEUR;
+        jeton[j].valeur.operateur=FOIS;
+        erreur=0;
+    }
+    else if(fonction[i] == ('/')){
+        jeton[j].lexem=OPERATEUR;
+        jeton[j].valeur.operateur=DIV;
+        erreur=0;
+    }
+    else if(fonction[i] == ('^')){
+        jeton[j].lexem=OPERATEUR;
+        jeton[j].valeur.operateur=PUIS;
+        erreur=0;
+    }
 
-		//Detection des lexèmes DIVERS
+// POUR PARENTHESE OUVERTE, PARENTHESE FERMEE ET VARIABLE
 
-		else if (expression[i] == '(') {
-			printf("(");
-			jeton[i].lexem = PAR_OUV;
-		}
-		else if (expression[i] == ')') {
-			printf(")");
-			jeton[i].lexem = PAR_FERM;
-		}
-		else if (expression[i] == 'x') {
-			printf("x");
-			jeton[i].lexem = VARIABLE;
-		}
-		else if (expression[i] == NULL ) {
-			printf("fin\n");
-			jeton[i].lexem = FIN;
-		}
-		else if (expression[i] == ')') {
-			printf(")");
-			jeton[i].lexem = PAR_FERM;
-		}
+    else if(fonction[i] == '('){
+        jeton[j].lexem=PAR_OUV;
+        erreur=0;
+    }
+    else if(fonction[i] == ')'){
+        jeton[j].lexem=PAR_FERM;
+        erreur=0;
+    }
+    else if(fonction[i] == 'x'){
+        jeton[j].lexem=VARIABLE;
+        erreur=0;
+    }
 
-		//Detection  du lexème REEL
+// POUR LES FONCTIONS
 
-		else if (expression[i]>='0' && expression[i] <= '9') {
-			int j = 0; //compteur 
-			int temp[100]; //tableau temporaire (1 case = un chiffre)
-			temp[j]= (expression[i]-'0'); //remplissage du tableau
+    char temp[100];
+    int itemp=i;
+    int jtemp=0;
+    // ON ENREGISTRE DANS UN TABLEAU LA SUITE DE LETTRES (LE MOT)
+    while(fonction[itemp]>= 'A' && fonction[itemp]<= 'Z'){
+            temp[jtemp]=fonction[itemp];
+            temp[jtemp+1]='\0';
+            itemp++;
+            jtemp++;
+    }
+    // ON COMPARE LE TABLEAU AVEC LES FONCTIONS CONNUES
+    if(strcmp(temp, "ABS") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=ABS;
+            temp[0]='\0';
+            i=i+2;
+            erreur=0;
+    }
+    else if(strcmp(temp, "SIN") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=SIN;
+            temp[0]='\0';
+            i=i+2;
+            erreur=0;
+    }
+    else if(strcmp(temp, "SQRT") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=SQRT;
+            temp[0]='\0';
+            i=i+3;
+            erreur=0;
+    }
+    else if(strcmp(temp, "LN") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=LN;
+            temp[0]='\0';
+            i=i+1;
+            erreur=0;
+    }
+    else if(strcmp(temp, "COS") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=COS;
+            temp[0]='\0';
+            i=i+2;
+            erreur=0;
+    }
+    else if(strcmp(temp, "TAN") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=TAN;
+            temp[0]='\0';
+            i=i+2;
+            erreur=0;
+    }
+    else if(strcmp(temp, "EXP") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=EXP;
+            temp[0]='\0';
+            i=i+2;
+            erreur=0;
+    }
+    else if(strcmp(temp, "ARCCOS") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=ARCCOS;
+            temp[0]='\0';
+            i=i+5;
+            erreur=0;
+    }
+    else if(strcmp(temp, "ARCSIN") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=ARCSIN;
+            temp[0]='\0';
+            i=i+5;
+            erreur=0;
+    }
+    else if(strcmp(temp, "ARCTAN") == 0){
+            jeton[j].lexem=FONCTION;
+            jeton[j].valeur.fonction=ARCTAN;
+            temp[0]='\0';
+            i=i+5;
+            erreur=0;
+    }
 
-			while (expression[i] >= '0' && expression[i] <= '9') { //Si le 
-				j++;
-				temp[j] = (expression[i] - '0'); //remplissage du tableau
-				i++;
-			}
-			
-			i = i - 1; 
-			int k = j; //k est la longueur totale du nombre 
-			printf("longueur du nombre = %d\n", k);
-			j = 0;
-			s = 0;
+// POUR LES REELS
 
-			while (temp[j]>=0 && temp[j]<=9) {
-				j++;
-				int p = pow(10, k - j);
-				s += temp[j] * p;
-				
-			}
-			printf("s=%d\n", s);
-			jeton[i].lexem = REEL;
-			jeton[i].valeur.reel = s;
-			printf("jeton=%f\n", jeton[i].valeur.reel);
-		}
-		else{
-			printf("erreur\n");
-			jeton[i].lexem = ERREUR;
-		}
-	}
+    if(fonction[i]>='0' && fonction[i]<='9'){
+    char temp2[100];
+    int itemp2=i;
+    int jtemp2=0;
+    // ON ENREGISTRE DANS UN TABLEAU LA SUITE DE CHIFFRES
+    while(fonction[itemp2]>= '0' && fonction[itemp2]<= '9' || fonction[itemp2]== '.'){
+            temp2[jtemp2]=fonction[itemp2];
+            temp2[jtemp2+1]='\0';
+            itemp2++;
+            jtemp2++;
+    }
+    // ON DONNE A CHAQUE NOMBRE UN JETON
+    jeton[j].lexem=REEL;
+    jeton[j].valeur.reel=atof(temp2);
+    temp2[0]='\0';
+    i=i+(jtemp2-1);
+    erreur=0;
+    }
+    // POUR LES REELS NEGATIFS
+    else if(fonction[i]== '_'){
+        i++;
+        if(fonction[i]>='0' && fonction[i]<='9'){
+        char temp2[100];
+        int itemp2=i;
+        int jtemp2=0;
+        while(fonction[itemp2]>= '0' && fonction[itemp2]<= '9' || fonction[itemp2]== '.'){
+            temp2[jtemp2]=fonction[itemp2];
+            temp2[jtemp2+1]='\0';
+            itemp2++;
+            jtemp2++;
+        }
+        jeton[j].lexem=REEL;
+        jeton[j].valeur.reel=-atof(temp2);
+        temp2[0]='\0';
+        i=i+(jtemp2-1);
+        erreur=0;
+        }
+    }
 
-	i = 0;
-	for (i = 0; i < length; i++) {
-		printf("lexeme = %d\n", jeton[i].lexem);
-		printf("valeur reelle = %f\n", jeton[i].valeur.reel);
-		printf("valeur operateur = %d\n", jeton[i].valeur.operateur);
-		printf("valeur fonction = %d\n", jeton[i].valeur.fonction);
-	}
+// POUR LES ERREURS
 
-	_getch();
+    if(erreur == 1){
+        jeton[j].lexem=ERREUR;
+    }
 
-	return 0;
+i++;
+j++;
+}
+
+// POUR LA FIN
+
+jeton[j].lexem=FIN;
 
 }
