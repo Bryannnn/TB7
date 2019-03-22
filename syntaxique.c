@@ -140,13 +140,15 @@ Arbre AS(typejeton Tab[], int* i){
 				default:
 					erreur(Tab, i , e);
 		}
-	if (*e == 0) {
+	if (*e == 0 && Tab[*i].lexem == FIN) {
 			return A;
-	} else {
+	} else if (*e != 0) {
 		printf("Erreur syntaxique a %d \n", (*i+1));
 		main();
 		//return NULL;
 		//relancer la 1er fonction.
+	} else {
+		return A;
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -158,28 +160,28 @@ void afficher(Arbre a) {
 	else{
 		switch(a->jeton.lexem){
 
-		case REEL:
+			case REEL:
 			printf("%d|%f\n",a->jeton.lexem, a->jeton.valeur.reel);
 			break;
 
-		case VARIABLE:
+			case VARIABLE:
 			printf("%d|%c\n",a->jeton.lexem, 'x');
 			break;
 
-		case FONCTION:
+			case FONCTION:
 			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.fonction);
 			break;
 
-		case OPERATEUR:
+			case OPERATEUR:
 			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.operateur);
 			break;
 
-		case ERREUR:
+			case ERREUR:
 			printf("%d|%d\n",a->jeton.lexem, a->jeton.valeur.erreur);
 			break;
 
-		default: break;
-	}
+			default: break;
+		}
 	}
 
 	afficher(a->fils_gauche);
