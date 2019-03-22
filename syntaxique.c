@@ -82,11 +82,10 @@ Arbre par_ouv(typejeton Tab[], int* i, int* e){
 	*i = *i + 1;
 
 	fg = AS(Tab, i);
-	//Dans le cas par exemple "(sinx)" on vérifie si on a une parenthèse fermante après le "x"
+
 	if(Tab[*i].lexem == PAR_FERM) {
 		return fg;
 	} else if (Tab[*i].lexem == FIN) {
-		//sinon on a une erreur
 		erreur(Tab, i, e);
 		return NULL;
 	}
@@ -141,18 +140,17 @@ Arbre AS(typejeton Tab[], int* i){
 				default:
 					erreur(Tab, i , e);
 		}
-	//Si on a aucune erreur et on est à la fin de l'expression
-	if (*e == 0 && Tab[*i].lexem == FIN) {
+	if (*e == 0) {
 			return A;
 	} else {
 		printf("Erreur syntaxique a %d \n", (*i+1));
-		return NULL;
-		//detection_fonction();
+		main();
+		//return NULL;
 		//relancer la 1er fonction.
 	}
 }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-void afficher( Arbre a) {
+void afficher(Arbre a) {
 	if(a == NULL){
 		printf("||\n");
 		return;
@@ -188,10 +186,10 @@ void afficher( Arbre a) {
 	afficher(a->fils_droit);
 }
 
-
+/*
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
-/*
+
 int i = 0;
 int* p = &i;
 
@@ -217,6 +215,6 @@ Arbre A;
 	A = AS(tab_test, p);
 
 	afficher(A);
-*/
+
 	return 0;
-}
+}*/
