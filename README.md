@@ -2,7 +2,7 @@
 Grapheur d'expressions fonctionnelles
 
 Chef de projet :
-Alexandre CHMIELEZKI
+Alexandre C
 
 Programmeurs :
 Théo KRANTZ
